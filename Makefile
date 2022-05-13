@@ -1,3 +1,4 @@
+PREFIX		:= /usr/local
 PKG_CONFIG	?= pkg-config
 ZFS_INCLUDES	?= $(shell $(PKG_CONFIG) --cflags libzfs)
 ZFS_LIBS	?= $(shell $(PKG_CONFIG) --libs libzfs)
@@ -11,6 +12,9 @@ CC	:= cc
 
 zevson: zevson.o
 	$(CC) $(LDFLAGS) -o $@ $<
+
+install: zevson
+	install -D -m 755 zevson $(DESTDIR)$(PREFIX)/bin/zevson
 
 clean:
 	rm -rf zevson *.o

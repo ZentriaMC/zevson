@@ -4,18 +4,29 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    openzfs-osx-shim-nix.url = "github:mikroskeem/openzfs-osx-shim-nix";
+
+    openzfs-osx-shim-nix.inputs.nixpkgs.follows = "nixpkgs";
+    openzfs-osx-shim-nix.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, openzfs-osx-shim-nix }:
     let
       supportedSystems = [
+        "aarch64-darwin"
         "aarch64-linux"
+        "x86_64-darwin"
         "x86_64-linux"
       ];
     in
     flake-utils.lib.eachSystem supportedSystems (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            openzfs-osx-shim-nix.overlay
+          ];
+        };
       in
       rec {
         packages.zevson = pkgs.callPackage
@@ -23,6 +34,9 @@
             pname = "zevson";
             version = self.rev or "dirty";
             src = lib.cleanSource ./.;
+
+            __impureHostDeps = lib.optional stdenv.isDarwin "/usr/local/zfs";
+            NIX_ENFORCE_PURITY = if stdenv.isDarwin then 0 else null;
 
             buildInputs = [
               zfs

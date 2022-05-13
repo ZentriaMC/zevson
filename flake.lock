@@ -31,10 +31,34 @@
         "type": "github"
       }
     },
+    "openzfs-osx-shim-nix": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1647039077,
+        "narHash": "sha256-nOG33THznHI8+a1mKJ4nKGl3T/TwEKVE4RTIXB3GDKA=",
+        "owner": "mikroskeem",
+        "repo": "openzfs-osx-shim-nix",
+        "rev": "b2dd3cae310c6d312303ed1cc694811f4ecdb4e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikroskeem",
+        "repo": "openzfs-osx-shim-nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "openzfs-osx-shim-nix": "openzfs-osx-shim-nix"
       }
     }
   },

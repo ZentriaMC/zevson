@@ -35,9 +35,6 @@
             version = self.rev or "dirty";
             src = lib.cleanSource ./.;
 
-            __impureHostDeps = lib.optional stdenv.isDarwin "/usr/local/zfs";
-            NIX_ENFORCE_PURITY = if stdenv.isDarwin then 0 else null;
-
             buildInputs = [
               zfs
             ];
